@@ -35,6 +35,7 @@ GPIO
 Map 6 keyboard keys to +- x/y/z steps 
 
 Anyone, relatively easy
+Kaden is willing to do this as well
 
 ### Robot Stuff
 
@@ -59,3 +60,4 @@ Rohit/Kaden
 - Extend the base to be the extent of the safety circle
 - Save automatic motions, possibly in an SD card.
 - A default reset state for the arm
+- Some way of telling the user the controls if advanced functions are added.
