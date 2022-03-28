@@ -35,7 +35,7 @@ GPIO
 Map 6 keyboard keys to +- x/y/z steps 
 
 Anyone, relatively easy
-Kaden is willing to do this as well
+- Kaden is willing to do this as well
 
 ### Robot Stuff
 
