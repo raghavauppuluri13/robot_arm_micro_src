@@ -21,9 +21,9 @@ Raghava
 
 ### LCD Display
 
--X, Y, Z Coordinates
--Top down view and side view
--Current state?
+- X, Y, Z Coordinates
+- Top down view and side view
+- Current state?
 
 
 Kaden
@@ -53,3 +53,9 @@ Rohit/Kaden
 
 - Establish joint limits and operating range, draw circle.
 - Wired E-stop connected to circuit to cut power
+
+### Other Random Ideas/Notes if needed
+- Automatic Advanced controls by way of keypad
+- Extend the base to be the extent of the safety circle
+- Save automatic motions, possibly in an SD card.
+- A default reset state for the arm
