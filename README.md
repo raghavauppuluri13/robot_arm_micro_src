@@ -58,6 +58,7 @@ Rohit/Kaden
 ### Other Random Ideas/Notes if needed
 - Automatic Advanced controls by way of keypad
 - Extend the base to be the extent of the safety circle
+- A way to record the robot arm's movements and store them for future use.
 - Save automatic motions, possibly in an SD card.
 - A default reset state for the arm
 - Some way of telling the user the controls if advanced functions are added.
