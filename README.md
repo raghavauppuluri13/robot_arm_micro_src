@@ -13,28 +13,38 @@ Source files for robot arm project for ECE 362
 
 ### Servo Comms
 
-PWM/Timers
+PWM/Timers/ADC
 
 - Angle to PWM interface -> use Timers and DAC
+
+Raghava
 
 ### LCD Display
 
 TODO
 
+Kaden
+
 ### Keyboard control
 
-GPIO/Timers
+GPIO
 
 Map 6 keyboard keys to +- x/y/z steps 
+
+Anyone, relatively easy
 
 ### Robot Stuff
 
 Convert current position of gripper to joint angles (inverse kinematics). Need to use fixed point math. 
 
+Raghava/Rohan
+
 ### Circuit Design
 
 - Connect all servos in parallel to 5V/ground
 - Connect servo data pins to respective STM32 pinouts
+
+Rohit/Kaden
 
 ### Safety
 
