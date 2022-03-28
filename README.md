@@ -62,3 +62,4 @@ Rohit/Kaden
 - Save automatic motions, possibly in an SD card.
 - A default reset state for the arm
 - Some way of telling the user the controls if advanced functions are added.
+- Pick up stacks of boxes and keep it stable.
