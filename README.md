@@ -21,7 +21,10 @@ Raghava
 
 ### LCD Display
 
-TODO
+-X, Y, Z Coordinates
+-Top down view and side view
+-Current state?
+
 
 Kaden
 
