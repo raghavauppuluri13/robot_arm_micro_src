@@ -25,6 +25,7 @@ Raghava
 - Top down view and side view
 - Current state?
 - Place a marker where objects are anticipated to be? (Would have to be input by user)
+- If recording motions is added, add a timer to the screen and a red dot to indicate it is being recorded.
 
 
 Kaden
