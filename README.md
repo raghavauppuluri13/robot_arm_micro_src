@@ -24,6 +24,7 @@ Raghava
 - X, Y, Z Coordinates
 - Top down view and side view
 - Current state?
+- Place a marker where objects are anticipated to be? (Would have to be input by user)
 
 
 Kaden
