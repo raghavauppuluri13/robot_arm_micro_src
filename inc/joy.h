@@ -1,0 +1,48 @@
+#ifndef __JOY_H__
+#define __JOY_H__
+#include "stm32f0xx.h"
+
+#define BCSIZE 32
+#define JOY_CNT 6
+
+/*
+  - Data Pinouts:
+    - 2 Joysticks (one axis will be unused):
+        - X-axis, PC0, ADC_IN10, JOY ID 0
+        - Y-axis, PC1, ADC_IN11, JOY ID 1
+        - Z-axis, PC2, ADC_IN12, JOY ID 2
+    - 3 Potentiometers (10kohm pots):
+        - Wrist-roll, PC3, ADC_IN13, JOY ID 3
+        - Wrist-pitch, PC4, ADC_IN14, JOY ID 4
+        - Gripper, PC5, ADC_IN15, JOY ID 5
+ */
+
+struct Joy {
+    // GPIOC
+    uint8_t pin;
+    // channel
+    uint8_t ch;
+    // output of boxcar value
+    int32_t val;
+    // boxcar averaging
+    int32_t bcsum;
+    int32_t boxcar[BCSIZE];
+    int32_t bcn;
+};
+
+struct Joy joys[JOY_CNT] = {
+  { .pin = 0, .ch = 10, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+  { .pin = 1, .ch = 11, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+  { .pin = 2, .ch = 12, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+  { .pin = 3, .ch = 13, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+  { .pin = 4, .ch = 14, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+  { .pin = 5, .ch = 15, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
+};
+
+// Read potentiometer
+void init_adc();
+
+// ADC Interrupt
+void init_tim15();
+
+#endif
