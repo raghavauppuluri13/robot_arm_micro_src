@@ -2,9 +2,6 @@
 #define __SERVO_H__
 #include "stm32f0xx.h"
 
-// Pulse width lim ts in microseconds for servo
-
-
 // PWM period=20ms
 #define PWM_PSC 16
 #define PWM_ARR 60000
@@ -15,14 +12,13 @@
 // 0.0272 duty cycle - 0 deg
 // min pulse width = 544ns
 #define MIN_CCR 1632
-
 // 90 deg
 #define MID_CCR 4416
-
 // 0.12s duty cycle - 180 deg
 // max pulse width = 2400ns
 #define MAX_CCR 7200
 #define SERVO_CNT 6
+
 /* Valid servo pin map:
  * TIM2_CH2: PA1, AF2  SERVO ID #0
  * TIM2_CH3: PA2, AF2, SERVO ID #1
@@ -76,16 +72,16 @@ const struct ServoSpec srv_specs[SERVO_CNT] = {
 };
 
 // servo and pwm inits
-static void pwm_gpio_init();
-static void srv_init(uint8_t id);
+void pwm_gpio_init();
+
+void servo_init(uint8_t id);
 
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg); //
 
 // maps a degree value to CCR value
-static uint16_t map_(uint16_t in, uint16_t from_high, uint16_t from_low,
+uint16_t map(uint16_t in, uint16_t from_high, uint16_t from_low,
                                   uint16_t to_high,   uint16_t to_low);
 
-// PWM Timers
 
 #endif
