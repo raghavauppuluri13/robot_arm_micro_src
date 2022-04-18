@@ -58,14 +58,11 @@ int main(void)
 //    servo_write(5,180);
 
     init_usart();
-    //print_integer(10,16,"0x");
-    smintf("Hello\n");
     init_joys();
     start_joys();
 
     for(;;) {
-        print_integer(joys[0].val,10,"0d");
-        smintf("\n");
-        nano_wait(100000000);
+        smintf("Joy 2: %d, Joy 3: %d\n", joys[0].val,joys[1].val);
+        nano_wait(10000000);
     }
 }

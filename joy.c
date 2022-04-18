@@ -30,7 +30,7 @@ void start_joys(void) {
 void init_tim15(void)
 {
     RCC->APB2ENR |= RCC_APB2ENR_TIM15EN;
-    TIM15->PSC = 480-1;
+    TIM15->PSC = 4800-1;
     TIM15->ARR = 100-1;
     TIM15->DIER |= 1;
     NVIC->ISER[0] |= 1<<TIM15_IRQn;
