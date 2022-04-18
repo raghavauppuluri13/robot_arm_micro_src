@@ -11,13 +11,14 @@
 
 #include "stm32f0xx.h"
 #include "inc/servo.h"
-#include "inc/joy.h"
 
 int main(void)
 {
-    uint8_t id = 0;
+    uint8_t id = 5;
     pwm_gpio_init();
     servo_init(id);
-    servo_write(id,90);
-	for(;;);
+    enable_servo_timers();
+    servo_write(id,0);
+
+    for(;;);
 }

@@ -44,5 +44,5 @@ void init_tim15(void)
     TIM15->CR1 |= 1;
 
     NVIC_EnableIRQ(TIM15_IRQn);
-    NVIC_SetPriority(TIM15_IRQn,3)
+    NVIC_SetPriority(TIM15_IRQn,3);
 }

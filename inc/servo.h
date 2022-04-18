@@ -1,6 +1,7 @@
+#include "stm32f0xx.h"
+
 #ifndef __SERVO_H__
 #define __SERVO_H__
-#include "stm32f0xx.h"
 
 // PWM period=20ms
 #define PWM_PSC 16
@@ -33,40 +34,41 @@ struct ServoSpec {
     TIM_TypeDef* tim;
     GPIO_TypeDef* gpio;
     uint8_t af;
-    __IO uint16_t* ccmr;
-    __IO uint16_t* ccr;
+    uint32_t* ccmr;
+    uint32_t* ccr;
     uint16_t mode_preload;
+    uint16_t ccer_en;
 };
 
-const struct ServoSpec srv_specs[SERVO_CNT] = {
+static const struct ServoSpec srv_specs[SERVO_CNT] = {
         /****************************** ID 0 **********************************/
         { .pin = 1, .gpio = GPIOA, .tim=TIM2, .af = 2,
-          .ccmr = &(TIM2->CCMR1), .ccr = &(TIM2->CCR1),
-          .mode_preload = TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2PE
+          .ccmr = &(TIM2->CCMR1), .ccr = &(TIM2->CCR2), .ccer_en = TIM_CCER_CC2E,
+          .mode_preload = TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1| TIM_CCMR1_OC2PE
         },
         /****************************** ID 1 **********************************/
         { .pin = 2, .gpio = GPIOA, .tim=TIM2, .af = 2,
-          .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR1),
+          .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR3),.ccer_en = TIM_CCER_CC3E,
           .mode_preload = TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3PE
         },
         /****************************** ID 2 **********************************/
         { .pin = 3, .gpio = GPIOA, .tim=TIM2, .af = 2,
-          .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR1),
+          .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR4),.ccer_en = TIM_CCER_CC4E,
           .mode_preload = TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4PE
         },
         /****************************** ID 3 **********************************/
         { .pin = 1, .gpio = GPIOB, .tim=TIM3, .af = 1,
-          .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR1),
+          .ccmr = &(TIM3->CCMR2), .ccr = &(TIM3->CCR4),.ccer_en = TIM_CCER_CC4E,
           .mode_preload = TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4PE
         },
         /****************************** ID 4 **********************************/
         { .pin = 4, .gpio = GPIOB, .tim=TIM3, .af = 1,
-          .ccmr = &(TIM2->CCMR1), .ccr = &(TIM2->CCR1),
+          .ccmr = &(TIM3->CCMR1), .ccr = &(TIM3->CCR1),.ccer_en = TIM_CCER_CC1E,
           .mode_preload = TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1PE
         },
         /****************************** ID 5 **********************************/
         { .pin = 5, .gpio = GPIOB, .tim=TIM3, .af = 1,
-          .ccmr = &(TIM2->CCMR1), .ccr = &(TIM2->CCR1),
+          .ccmr = &(TIM3->CCMR1), .ccr = &(TIM3->CCR2),.ccer_en = TIM_CCER_CC2E,
           .mode_preload = TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2PE
         },
 };
@@ -76,12 +78,13 @@ void pwm_gpio_init();
 
 void servo_init(uint8_t id);
 
+void enable_servo_timers();
+
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg); //
 
 // maps a degree value to CCR value
-uint16_t map(uint16_t in, uint16_t from_high, uint16_t from_low,
-                                  uint16_t to_high,   uint16_t to_low);
-
+uint32_t map(uint32_t in, uint32_t from_high, uint32_t from_low,
+                                  uint32_t to_high,   uint32_t to_low);
 
 #endif
