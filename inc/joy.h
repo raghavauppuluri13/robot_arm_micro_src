@@ -17,30 +17,35 @@
         - Gripper, PC5, ADC_IN15, JOY ID 5
  */
 
-struct Joy {
+struct JoySpec {
     // GPIOC
     uint8_t pin;
     // channel
     uint8_t ch;
+};
+
+static const struct JoySpec joy_specs[JOY_CNT] = {
+  { .pin = 0, .ch = 10},
+  { .pin = 1, .ch = 11},
+  { .pin = 2, .ch = 12},
+  { .pin = 3, .ch = 13},
+  { .pin = 4, .ch = 14},
+  { .pin = 5, .ch = 15}
+};
+
+struct Joy {
     // output of boxcar value
     int32_t val;
     // boxcar averaging
-    int32_t bcsum;
-    int32_t boxcar[BCSIZE];
-    int32_t bcn;
+    int bcsum;
+    int boxcar[BCSIZE];
+    int bcn;
 };
 
-struct Joy joys[JOY_CNT] = {
-  { .pin = 0, .ch = 10, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-  { .pin = 1, .ch = 11, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-  { .pin = 2, .ch = 12, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-  { .pin = 3, .ch = 13, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-  { .pin = 4, .ch = 14, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-  { .pin = 5, .ch = 15, .val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
-};
 
-// Read potentiometer
-void init_adc();
+void init_joys();
+
+void start_joys(void);
 
 // ADC Interrupt
 void init_tim15();

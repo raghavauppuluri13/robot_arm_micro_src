@@ -13,9 +13,7 @@ void pwm_gpio_init()
 
     TIM3->ARR = PWM_ARR-1;
     TIM3->PSC = PWM_PSC-1;
-}
 
-void enable_servo_timers() {
     TIM2->CR1 |= TIM_CR1_CEN;
     TIM3->CR1 |= TIM_CR1_CEN;
 }

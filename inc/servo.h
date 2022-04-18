@@ -78,8 +78,6 @@ void pwm_gpio_init();
 
 void servo_init(uint8_t id);
 
-void enable_servo_timers();
-
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg); //
 

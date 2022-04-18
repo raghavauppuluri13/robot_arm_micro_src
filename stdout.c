@@ -17,7 +17,7 @@ void init_usart() {
     GPIOD->AFR[0] |= 2 << (4 * 2);
 
     USART5->CR1 &= ~USART_CR1_UE;
-    USART5->BRR = 48000000 / 115200;
+    USART5->BRR = 48000000 / BAUD_RATE;
     USART5->CR1 &= ~USART_CR1_M;
     USART5->CR2 &= ~USART_CR2_STOP;
     USART5->CR1 &= ~USART_CR1_OVER8;
@@ -55,26 +55,26 @@ void smintf(const char *format, ...) {
                 case 's':
                     str = va_arg(more_args,char*);
                     for(int j = 0; str[j] != '\0'; j++) {
-                        fputc(str[j],stdout);
+                        printchar(str[j]);
                     }
                     i++;
                     break;
 
                 case 'c':
-                    fputc(va_arg(more_args,int),stdout);
+                    printchar(va_arg(more_args,int));
                     i++;
                     break;
 
                 case '%':
-                    fputc('%',stdout);
+                    printchar('%');
                     i++;
                     break;
                 default:
-                    fputc('%',stdout);
+                    printchar('%');
             }
         }
         else {
-            fputc(format[i],stdout);
+            printchar(format[i]);
         }
     }
 
@@ -82,14 +82,13 @@ void smintf(const char *format, ...) {
 }
 
 
-int __io_putchar(int c) {
+void printchar(uint8_t c) {
     if(c == '\n') {
         while(!(USART5->ISR & USART_ISR_TXE)) { }
         USART5->TDR = '\r';
     }
     while(!(USART5->ISR & USART_ISR_TXE)) { }
     USART5->TDR = c;
-    return c;
 }
 
 
@@ -102,10 +101,10 @@ static void _print_integer_recur(unsigned int n, int radix) {
         digit = n % radix;
 
         if(digit < 10) {
-            fputc('0' + digit, stdout);
+            printchar('0' + digit);
         }
         else {
-            fputc('a' + (digit - 10), stdout);
+            printchar('a' + (digit - 10));
         }
     }
 }
@@ -116,16 +115,16 @@ static void _print_integer_recur(unsigned int n, int radix) {
 void print_integer(int n, int radix, char* prefix) {
     unsigned int abs_n = n > 0 ? n : -n;
     if(n < 0) {
-        putchar('-');
+        printchar('-');
     }
 
     // Print prefix
     for(int i = 0; prefix[i] != '\0'; i++) {
-        putchar(prefix[i]);
+        printchar(prefix[i]);
     }
 
     if(n == 0) {
-        putchar('0');
+        printchar('0');
     }
     else {
         _print_integer_recur(abs_n,radix);
