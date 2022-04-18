@@ -44,10 +44,7 @@ struct Joy {
 
 
 void init_joys();
-
 void start_joys(void);
-
-// ADC Interrupt
 void init_tim15();
 
 #endif

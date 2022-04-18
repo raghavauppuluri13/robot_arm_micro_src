@@ -1,18 +1,18 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  Ac6
+  * @author  Raghava Uppuluri
   * @version V1.0
   * @date    01-December-2013
   * @brief   Default main function.
   ******************************************************************************
 */
 
-
 #include "stm32f0xx.h"
 #include "inc/servo.h"
 #include "inc/stdout.h"
 #include "inc/joy.h"
+#include "inc/utils.h"
 
 struct Joy joys[JOY_CNT] = {
   {.val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
@@ -42,27 +42,42 @@ void TIM15_IRQHandler() {
     }
 }
 
-void nano_wait(unsigned int n) {
-    asm(    "        mov r0,%0\n"
-            "repeat: sub r0,#83\n"
-            "        bgt repeat\n" : : "r"(n) : "r0", "cc");
+
+void test_servo() {
+    pwm_gpio_init();
+    for(int id = 0; id < SERVO_CNT; id++ ) {
+        servo_init(id);
+    }
+
+    int wait = 10000000;
+
+    for(;;) {
+        for(int i = 0; i < 180; i++) {
+            servo_write(0,i);
+            nano_wait(wait);
+        }
+        for(int i = 180; i >= 0; i--) {
+            servo_write(0,i);
+            nano_wait(wait);
+        }
+    }
+
 }
 
-int main(void)
-{
-//    pwm_gpio_init();
-//
-//    for(int id = 0; id < SERVO_CNT; id++ ) {
-//        servo_init(id);
-//    }
-//    servo_write(5,180);
-
-    init_usart();
+void test_joys() {
     init_joys();
     start_joys();
 
     for(;;) {
-        smintf("Joy 2: %d, Joy 3: %d\n", joys[0].val,joys[1].val);
+        smintf("Joy 0: %d, Joy 1: %d \n", joys[0].val,joys[1].val);
         nano_wait(10000000);
     }
+
+}
+
+int main(void)
+{
+    init_usart(); // printf with serial protocol
+    //test_joys();
+    test_servo();
 }

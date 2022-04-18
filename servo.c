@@ -1,5 +1,5 @@
 #include "inc/servo.h"
-
+#include "assert.h"
 // PWM
 void pwm_gpio_init()
 {
@@ -30,6 +30,7 @@ void servo_init(uint8_t id) {
 
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg) {
+   assert(deg >= 0 && deg <= 180);
    *(srv_specs[id].ccr) = map(deg,MAX_DEG,MIN_DEG,MAX_CCR,MIN_CCR);
 }
 
