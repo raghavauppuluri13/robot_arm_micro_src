@@ -10,6 +10,7 @@
 
 #include "stm32f0xx.h"
 #include "inc/servo.h"
+#include "inc/ik.h"
 #include "inc/stdout.h"
 #include "inc/joy.h"
 #include "inc/utils.h"
@@ -50,7 +51,7 @@ void test_servo() {
         servo_init(id);
     }
 
-    int wait = 10000000;
+    int wait = 10000000; // ns ~ 100hz pub rate
 
     for(;;) {
         for(int i = 0; i < 180; i++) {
@@ -65,9 +66,33 @@ void test_servo() {
 
 }
 
+void test_ik() {
+    init_inv_kin();
+    for(;;) {
+        for(int i = 0; i < 10; i++) {
+            smintf("start \n");
+            inv_kin();
+            smintf("end\n");
+            for(int i = 0; i < SERVO_CNT; i++) {
+                smintf("J%d: %d ", i, ang[i]);
+            }
+            z -= 0.01;
+        }
+        for(int i = 0; i < 10; i++) {
+            smintf("start \n");
+            inv_kin();
+            smintf("end\n");
+            for(int i = 0; i < SERVO_CNT; i++) {
+                smintf("J%d: %d ", i, ang[i]);
+            }
+            z += 0.01;
+        }
+    }
+
+}
+
 void test_break_beam() {
     init_break_beam();
-
     for(;;) {
         smintf("Score: %d\n", score);
         nano_wait(10000000);
@@ -91,5 +116,6 @@ int main(void)
     init_usart(); // printf with serial protocol
     //test_joys();
     //test_servo();
-    test_break_beam();
+    //test_break_beam();
+    test_ik();
 }

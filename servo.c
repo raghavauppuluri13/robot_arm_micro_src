@@ -28,9 +28,19 @@ void servo_init(uint8_t id) {
     *(srv_specs[id].ccr) = MID_CCR;
 }
 
+void clamp(float* val, uint8_t max, uint8_t min) {
+    if (*val > max) {
+       *val = max;
+    }
+    else if(*val < min) {
+       *val = min;
+    }
+}
+
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg) {
    assert(deg >= 0 && deg <= 180);
+   clamp(&deg,srv_specs[id].max_ang,srv_specs[id].min_ang);
    *(srv_specs[id].ccr) = map(deg,MAX_DEG,MIN_DEG,MAX_CCR,MIN_CCR);
 }
 
