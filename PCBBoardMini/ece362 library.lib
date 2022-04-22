@@ -1,0 +1,74 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# joystick_or_servo
+#
+DEF joystick_or_servo U 0 40 Y Y 1 F N
+F0 "U" 0 -100 50 H V C CNN
+F1 "joystick_or_servo" 0 -100 50 H V C CNN
+F2 "" 0 -100 50 H I C CNN
+F3 "" 0 -100 50 H I C CNN
+DRAW
+S 0 0 400 300 0 1 0 N
+X com 1 -50 150 100 R 50 50 1 1 I
+X vdd 2 300 350 100 D 50 50 1 1 I
+X gnd 3 300 -50 100 U 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+# lcdscreen
+#
+DEF lcdscreen U 0 40 Y Y 1 F N
+F0 "U" 0 0 50 H V C CNN
+F1 "lcdscreen" 0 0 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S 50 150 1050 500 0 1 0 N
+X ~ 1 950 600 100 D 50 50 1 1 I
+X ~ 2 850 600 100 D 50 50 1 1 I
+X ~ 3 750 600 100 D 50 50 1 1 I
+X ~ 4 650 600 100 D 50 50 1 1 I
+X ~ 5 550 600 100 D 50 50 1 1 I
+X ~ 6 450 600 100 D 50 50 1 1 I
+X ~ 7 350 600 100 D 50 50 1 1 I
+X ~ 8 250 600 100 D 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+# programmerblock
+#
+DEF programmerblock U 0 40 Y Y 1 F N
+F0 "U" 0 0 50 H V C CNN
+F1 "programmerblock" 0 0 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -250 100 300 400 0 1 0 N
+X 5V 1 -150 500 100 D 50 50 1 1 I
+X PA14 2 -50 500 100 D 50 50 1 1 I
+X GND 3 50 500 100 D 50 50 1 1 I
+X PA13 4 150 500 100 D 50 50 1 1 I
+X NRST 5 250 500 100 D 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+# rx_tx
+#
+DEF rx_tx U 0 40 Y Y 1 F N
+F0 "U" 0 0 50 H V C CNN
+F1 "rx_tx" 100 0 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -300 600 -50 150 0 1 0 N
+S 300 600 550 150 1 1 0 N
+X vdd 1 -150 700 100 D 50 50 1 1 I
+X gnd 2 -150 50 100 U 50 50 1 1 I
+X com 3 -400 400 100 R 50 50 1 1 I
+X vdd 4 450 700 100 D 50 50 1 1 I
+X gnd 5 450 50 100 U 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+#End Library

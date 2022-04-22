@@ -1,0 +1,71 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L stm32f091-cache:STM32F091RCTx U?
+U 1 1 625CEFF1
+P 5900 3450
+F 0 "U?" H 5850 1561 50  0000 C CNN
+F 1 "STM32F091RCTx" H 5850 1470 50  0000 C CNN
+F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 5300 1750 50  0001 R CNN
+F 3 "" H 5900 3450 50  0001 C CNN
+	1    5900 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L stm32f091-cache:power_GND #PWR?
+U 1 1 625D109D
+P 5600 5250
+F 0 "#PWR?" H 5600 5000 50  0001 C CNN
+F 1 "power_GND" H 5605 5077 50  0000 C CNN
+F 2 "" H 5600 5250 50  0001 C CNN
+F 3 "" H 5600 5250 50  0001 C CNN
+	1    5600 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L stm32f091-cache:power_GND #PWR?
+U 1 1 625D156E
+P 5700 5250
+F 0 "#PWR?" H 5700 5000 50  0001 C CNN
+F 1 "power_GND" H 5705 5077 50  0000 C CNN
+F 2 "" H 5700 5250 50  0001 C CNN
+F 3 "" H 5700 5250 50  0001 C CNN
+	1    5700 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L stm32f091-cache:power_GND #PWR?
+U 1 1 625D1B97
+P 5800 5250
+F 0 "#PWR?" H 5800 5000 50  0001 C CNN
+F 1 "power_GND" H 5805 5077 50  0000 C CNN
+F 2 "" H 5800 5250 50  0001 C CNN
+F 3 "" H 5800 5250 50  0001 C CNN
+	1    5800 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L stm32f091-cache:power_GND #PWR?
+U 1 1 625D220C
+P 5900 5250
+F 0 "#PWR?" H 5900 5000 50  0001 C CNN
+F 1 "power_GND" H 5905 5077 50  0000 C CNN
+F 2 "" H 5900 5250 50  0001 C CNN
+F 3 "" H 5900 5250 50  0001 C CNN
+	1    5900 5250
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
