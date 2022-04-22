@@ -13,6 +13,7 @@
 #include "inc/stdout.h"
 #include "inc/joy.h"
 #include "inc/utils.h"
+#include "inc/break_beam.h"
 
 struct Joy joys[JOY_CNT] = {
   {.val = 2048, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
@@ -64,6 +65,16 @@ void test_servo() {
 
 }
 
+void test_break_beam() {
+    init_break_beam();
+
+    for(;;) {
+        smintf("Score: %d\n", score);
+        nano_wait(10000000);
+    }
+
+}
+
 void test_joys() {
     init_joys();
     start_joys();
@@ -79,5 +90,6 @@ int main(void)
 {
     init_usart(); // printf with serial protocol
     //test_joys();
-    test_servo();
+    //test_servo();
+    test_break_beam();
 }
