@@ -25,10 +25,10 @@ void servo_init(uint8_t id) {
     // Enable PWM 1 mode and preload register
     *(srv_specs[id].ccmr) |= srv_specs[id].mode_preload;
     srv_specs[id].tim->CCER |= srv_specs[id].ccer_en;
-    *(srv_specs[id].ccr) = MID_CCR;
+    *(srv_specs[id].ccr) = map(srv_specs[id].init_ang,MAX_DEG,MIN_DEG,MAX_CCR,MIN_CCR);
 }
 
-void clamp(float* val, uint8_t max, uint8_t min) {
+void clamp(float* val, int max, int min) {
     if (*val > max) {
        *val = max;
     }
@@ -39,7 +39,7 @@ void clamp(float* val, uint8_t max, uint8_t min) {
 
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg) {
-   assert(deg >= 0 && deg <= 180);
+   //assert(deg >= 0 && deg <= 180);
    clamp(&deg,srv_specs[id].max_ang,srv_specs[id].min_ang);
    *(srv_specs[id].ccr) = map(deg,MAX_DEG,MIN_DEG,MAX_CCR,MIN_CCR);
 }

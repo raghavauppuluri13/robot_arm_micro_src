@@ -10,5 +10,6 @@ void init_usart(void);
 void smintf(const char *format, ...);
 void print_integer(int n, int radix, char* prefix);
 void printchar(uint8_t c);
+void print_float(float a);
 
 #endif

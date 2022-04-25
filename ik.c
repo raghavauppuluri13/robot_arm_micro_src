@@ -1,48 +1,70 @@
 #include "inc/ik.h"
+#include "inc/stdout.h"
 
-static const float l1 = 0.1247;
-static const float l2 = 0.1147;
-static const float l3 = 0.09498;
-static const float l1_2 = 0.01555009;
-static const float l2_2 = 0.01315609;
-static const float l3_2 = 0.0090212;
-
-float Q_rsqrt( float number )
-{
-    long i;
-    float x2, y;
-    const float threehalfs = 1.5F;
-
-    x2 = number * 0.5F;
-    y  = number;
-    i  = * ( long * ) &y;                       // evil floating point bit level hacking
-    i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
-    y  = * ( float * ) &i;
-    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-//  y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-    return y;
-}
+#define BASE_HGT 98 //base height
+#define HUMERUS 118 //shoulder-to-elbow "bone"
+#define ULNA 115 //elbow-to-wrist "bone"
+#define GRIPPER 95 //gripper (incl.heavy duty wrist rotate mechanism) length "
+const static float hum_sq = HUMERUS*HUMERUS;
+const static float uln_sq = ULNA*ULNA;
 
 void init_inv_kin() {
-    x = -0.231;
-    y = -0.0107;
-    z = 0.301;
-    th = -M_PI / 4;
-    memset(ang,0,sizeof(uint8_t) * SERVO_CNT);
+    x = 0;
+    y = 128.0;
+    z = 100.0;
+    th = 10.0;
+    grip = 5.0;
+    inv_kin();
+}
+
+float rad_to_deg(float rad) {
+    return (rad * 57296) / 1000;
+}
+
+float deg_to_rad(float deg) {
+    return (deg * 1000) / 57296;
 }
 
 void inv_kin() {
-   float x_2 = pow(x,2);
-   float y_2 = pow(x,2);
-   float p = sqrt(x_2 + y_2 + pow(z,2));
-   float phi = atan(sqrt(x_2 + y_2) / z);
-   float x_c = (p * sin(phi)) - l3 * cos(th);
-   float y_c = (p * cos(phi)) - l3 * sin(th);
-   int xy_inv = Q_rsqrt(x_2 + y_2);
-   ang[0] = atan(y/x);
-   ang[1] = atan2(xy_inv * -y_c, xy_inv * -x_c) +
-        acos((x_2 + y_2 + l1_2 - l2_2) * 0.5 * 1/l1 * xy_inv);
-   ang[2] = atan2((y_c - l1 * sin(ang[1])) / l2, (x_c - l1 * cos(ang[1])) / l2) - ang[1];
-   ang[4] = th - (ang[1] + ang[2]);
+
+   float grip_angle_r = deg_to_rad( th ); //grip angle in radians for use in calculations
+
+   /* Base angle and radial distance from x,y coordinates */
+   float bas_angle_d = rad_to_deg(atan2( x, y ));
+   float rdist = sqrt(( x * x ) + ( y * y ));
+
+   /* Grip offsets calculated based on grip angle */
+   float grip_off_z = ( sin( grip_angle_r )) * GRIPPER;
+   float grip_off_y = ( cos( grip_angle_r )) * GRIPPER;
+
+   /* Wrist position */
+   float wrist_z = ( z - grip_off_z ) - BASE_HGT;
+   float wrist_y = y - grip_off_y;
+
+   /* Shoulder to wrist distance ( AKA sw ) */
+   float s_w = ( wrist_z * wrist_z ) + ( wrist_y * wrist_y );
+   float s_w_sqrt = sqrt( s_w );
+
+   /* s_w angle to ground */
+   float a1 = atan2( wrist_z, wrist_y );
+
+   /* s_w angle to humerus */
+   float a2 = acos((( hum_sq - uln_sq ) + s_w ) / ( 2 * HUMERUS * s_w_sqrt ));
+
+   /* shoulder angle */
+   float shl_angle_r = a1 + a2;
+   float shl_angle_d = rad_to_deg( shl_angle_r );
+
+   /* elbow angle */
+   float elb_angle_r = acos(( hum_sq + uln_sq - s_w ) / ( 2 * HUMERUS * ULNA ));
+   float elb_angle_d = rad_to_deg( elb_angle_r );
+   float elb_angle_dn = -( 180.0 - elb_angle_d );
+
+   /* wrist angle */
+   float wri_angle_d = ( th - elb_angle_dn ) - shl_angle_d;
+
+   ang[0] = bas_angle_d + 90;
+   ang[1] = shl_angle_d;
+   ang[2] = elb_angle_d;
+   ang[4] = wri_angle_d;
 }

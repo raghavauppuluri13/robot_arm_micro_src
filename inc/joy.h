@@ -4,6 +4,8 @@
 
 #define BCSIZE 32
 #define JOY_CNT 6
+#define UPPER_JOY_MID 2300
+#define LOWER_JOY_MID 1500
 
 /*
   - Data Pinouts:

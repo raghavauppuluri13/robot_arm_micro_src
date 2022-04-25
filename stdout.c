@@ -109,6 +109,12 @@ static void _print_integer_recur(unsigned int n, int radix) {
     }
 }
 
+void print_float(float a) {
+    char c[50]; //size of the number
+    sprintf(c, "%g", a);
+    smintf(c);
+}
+
 
 // Prints a given integer value in a representation based on radix
 // and adds a prefix directly to the left of the first digit

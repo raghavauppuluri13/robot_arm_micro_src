@@ -39,6 +39,7 @@ struct ServoSpec {
     uint16_t mode_preload;
     uint16_t ccer_en;
     uint8_t max_ang;
+    uint8_t init_ang;
     uint8_t min_ang;
 };
 
@@ -47,37 +48,37 @@ static const struct ServoSpec srv_specs[SERVO_CNT] = {
         { .pin = 1, .gpio = GPIOA, .tim=TIM2, .af = 2,
           .ccmr = &(TIM2->CCMR1), .ccr = &(TIM2->CCR2), .ccer_en = TIM_CCER_CC2E,
           .mode_preload = TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1| TIM_CCMR1_OC2PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 0, .max_ang = 180, .init_ang = 90
         },
         /****************************** ID 1 **********************************/
         { .pin = 2, .gpio = GPIOA, .tim=TIM2, .af = 2,
           .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR3),.ccer_en = TIM_CCER_CC3E,
           .mode_preload = TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 0, .max_ang = 180, .init_ang = 90
         },
         /****************************** ID 2 **********************************/
         { .pin = 3, .gpio = GPIOA, .tim=TIM2, .af = 2,
           .ccmr = &(TIM2->CCMR2), .ccr = &(TIM2->CCR4),.ccer_en = TIM_CCER_CC4E,
           .mode_preload = TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 75, .max_ang = 105, .init_ang = 90
         },
         /****************************** ID 3 **********************************/
         { .pin = 1, .gpio = GPIOB, .tim=TIM3, .af = 1,
           .ccmr = &(TIM3->CCMR2), .ccr = &(TIM3->CCR4),.ccer_en = TIM_CCER_CC4E,
           .mode_preload = TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 15, .max_ang = 160, .init_ang = 90
         },
         /****************************** ID 4 **********************************/
         { .pin = 4, .gpio = GPIOB, .tim=TIM3, .af = 1,
           .ccmr = &(TIM3->CCMR1), .ccr = &(TIM3->CCR1),.ccer_en = TIM_CCER_CC1E,
           .mode_preload = TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 0, .max_ang = 180, .init_ang = 90
         },
         /****************************** ID 5 **********************************/
         { .pin = 5, .gpio = GPIOB, .tim=TIM3, .af = 1,
           .ccmr = &(TIM3->CCMR1), .ccr = &(TIM3->CCR2),.ccer_en = TIM_CCER_CC2E,
           .mode_preload = TIM_CCMR1_OC2M_2 | TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2PE,
-          .min_ang = 0, .max_ang = 180
+          .min_ang = 0, .max_ang = 180, .init_ang = 100
         },
 };
 
@@ -87,7 +88,7 @@ void pwm_gpio_init();
 void servo_init(uint8_t id);
 
 // clamps a value
-void clamp(float* val, uint8_t max, uint8_t min);
+void clamp(float* val, int max, int min);
 
 // writes a degree value to a servo
 void servo_write(uint8_t id, float deg);
