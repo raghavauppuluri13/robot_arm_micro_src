@@ -16,6 +16,11 @@
 #include "inc/utils.h"
 #include "inc/break_beam.h"
 
+#include "inc/lcd.h"
+#include "inc/midi.h"
+#include "inc/midiplay.h"
+#define TOTAL_SECONDS_RESET_VALUE 3*60
+
 struct Joy joys[JOY_CNT] = {
   {.val = 1950, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
   {.val = 1950, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
@@ -170,14 +175,13 @@ void init_robot() {
     start_joys();
     init_inv_kin();
     pwm_gpio_init();
-    init_break_beam();
     for(int id = 0; id < SERVO_CNT; id++ ) {
         servo_init(id);
     }
 
     RCC->APB2ENR |= RCC_APB2ENR_TIM17EN;
-    TIM17->PSC = 1000-1;
-    TIM17->ARR = 480-1;
+    TIM17->PSC = 300-1;
+    TIM17->ARR = 4800-1;
     TIM17->DIER |= TIM_DIER_UIE;
     TIM17->CR1 |= TIM_CR1_CEN;
     NVIC_EnableIRQ(TIM17_IRQn);
@@ -199,7 +203,7 @@ void test_main() {
 // int main(void)
 // {
 //     init_usart(); // printf with serial protocol
-//     init_robot();
+//     //init_robot();
 //     //test_main();
 //     //test_joys();
 //     //test_servo();
@@ -207,10 +211,6 @@ void test_main() {
 //     //test_ik();
 // }
 
-#include "inc/lcd.h"
-#include "inc/midi.h"
-#include "inc/midiplay.h"
-#define TOTAL_SECONDS_RESET_VALUE 3*60
 
 static char print_score[4], print_countdown[5];
 static int total_seconds_left = (TOTAL_SECONDS_RESET_VALUE);
@@ -584,20 +584,8 @@ void countdown_timer(void)
     TIM7->PSC = 1000 - 1;
     TIM7->DIER |= TIM_DIER_UIE;
     TIM7->CR1 |= TIM_CR1_CEN;
-    NVIC_SetPriority(TIM7_IRQn, 4);
+    NVIC_SetPriority(TIM7_IRQn, 3);
     NVIC->ISER[0] |= (1<<TIM7_IRQn);
-}
-
-void score_increment(void)
-{
-    // USE PC10 AS INPUT TO TRIGGER GPIO INTERRUPT
-    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGCOMPEN;
-    SYSCFG->EXTICR[2] &= ~SYSCFG_EXTICR3_EXTI10;
-    SYSCFG->EXTICR[2] |= SYSCFG_EXTICR3_EXTI10_PC;
-    EXTI->RTSR |= EXTI_RTSR_TR10;
-    EXTI->IMR |= EXTI_IMR_MR10;
-    NVIC_SetPriority(EXTI4_15_IRQn, 5);
-    NVIC->ISER[0] |= (1<<EXTI4_15_IRQn);
 }
 
 void num_to_string(void)
@@ -615,7 +603,7 @@ void num_to_string(void)
 void game_logic(void)
 {
     countdown_timer();
-    score_increment();
+    init_break_beam();
 }
 
 void initialize_lcd_contents(void)
@@ -721,8 +709,10 @@ void continuous_display_music(void)
 
 int main(void)
 {
+
+    init_usart(); // printf with serial protocol
     enableTIM14();
-    //init_robot();
+    init_robot();
     char newStr[2];
 
     LCD_Setup(); // this will call init_lcd_spi()
