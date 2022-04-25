@@ -14,11 +14,11 @@ Inverse kinematics for the robot
 #define X_MIN -280
 #define X_MAX 280
 
-#define Y_MIN 128
+#define Y_MIN 160
 #define Y_MAX 230
 
 #define Z_MIN 80
-#define Z_MAX 250
+#define Z_MAX 230
 #define GRIP_MIN 5
 #define GRIP_MAX 45
 

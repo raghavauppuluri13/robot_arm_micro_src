@@ -10,8 +10,8 @@ const static float uln_sq = ULNA*ULNA;
 
 void init_inv_kin() {
     x = 0;
-    y = 128.0;
-    z = 100.0;
+    y = 150.0;
+    z = 150.0;
     th = 10.0;
     grip = 5.0;
     inv_kin();
