@@ -10,14 +10,14 @@ Inverse kinematics for the robot
 #ifndef __IK_H__
 #define __IK_H__
 
-#define AXIS_STEP 1
+#define AXIS_STEP 2
 #define X_MIN -280
 #define X_MAX 280
 
 #define Y_MIN 160
 #define Y_MAX 230
 
-#define Z_MIN 80
+#define Z_MIN 60
 #define Z_MAX 230
 #define GRIP_MIN 5
 #define GRIP_MAX 45

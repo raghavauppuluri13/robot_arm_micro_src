@@ -146,8 +146,8 @@ void init_robot() {
 }
 
 void loop_robot() {
-    inc_axis(&x,0,X_MIN,X_MAX);
-    inc_axis(&y,1,Y_MIN,Y_MAX);
+    inc_axis(&x,1,X_MIN,X_MAX);
+    inc_axis(&y,0,Y_MIN,Y_MAX);
     inc_axis(&z,2,Z_MIN,Z_MAX);
     inc_axis(&grip,3,GRIP_MIN,GRIP_MAX);
     smintf("XYZ: ");
@@ -165,13 +165,14 @@ void loop_robot() {
         smintf(", ", i);
     }
     smintf("}\n");
+    smintf("Score: %d\n", score);
     servo_write(0, ang[0]);
     servo_write(1, ang[1]);
     servo_write(2, ang[2]);
     servo_write(3,90);
     servo_write(4, ang[4]);
     servo_write(5,grip);
-    nano_wait(10000000); // speed and frequency of arm
+    nano_wait(50000000); // speed and frequency of arm
 }
 
 void test_main() {
