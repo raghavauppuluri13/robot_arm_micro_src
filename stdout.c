@@ -1,4 +1,3 @@
-/* vim: set tabstop=4 shiftwidth=4 fileencoding=utf-8 noexpandtab: */
 #include "inc/stdout.h"
 
 void init_usart() {
