@@ -3,7 +3,7 @@
 #include "stm32f0xx.h"
 
 #define BCSIZE 32
-#define JOY_CNT 6
+#define JOY_CNT 4
 #define UPPER_JOY_MID 2300
 #define LOWER_JOY_MID 1500
 

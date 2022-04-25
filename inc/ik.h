@@ -1,7 +1,5 @@
 /*
 Inverse kinematics for the robot
-
-
  */ 
 #include <string.h>
 #include <math.h>

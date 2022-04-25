@@ -34,4 +34,5 @@ void init_tim15(void)
     TIM15->ARR = 100-1;
     TIM15->DIER |= 1;
     NVIC->ISER[0] |= 1<<TIM15_IRQn;
+    NVIC_SetPriority(TIM15_IRQn,0);
 }
