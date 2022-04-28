@@ -19,8 +19,10 @@
 #include "inc/lcd.h"
 #include "inc/midi.h"
 #include "inc/midiplay.h"
-#define TOTAL_SECONDS_RESET_VALUE 3*60
 
+#define TOTAL_SECONDS_RESET_VALUE 3*60
+int prevScore;
+int hardCount;
 struct Joy joys[JOY_CNT] = {
   {.val = 1950, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
   {.val = 1950, .bcsum = 0, .boxcar = {0}, .bcn = 0 },
@@ -243,7 +245,7 @@ void init_lcd_spi(void)
        SPI1->CR1 |= (SPI_CR1_MSTR | SPI_CR1_SSM | SPI_CR1_SSI);
        SPI1->CR2 |= (SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0);
        SPI1->CR1 |= SPI_CR1_SPE;*/
-            RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
+           RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
            GPIOB->MODER &= ~(GPIO_MODER_MODER8 | GPIO_MODER_MODER11 |
                                GPIO_MODER_MODER14);
            GPIOB->MODER |= (GPIO_MODER_MODER8_0 | GPIO_MODER_MODER11_0 |
@@ -528,11 +530,11 @@ void TIM14_IRQHandler()
     {
         mainMenuCount--;
         updateMenu = 1;
-        if((optionSelected > 0) &&((joys[1].val  < 1024) | (joys[2].val  < 1024)))
+        if((optionSelected > 0) &&((joys[0].val  < 1024) | (joys[2].val  > 3072)))
         {
             optionSelected--;
         }
-        else if((optionSelected < 3) &&((joys[1].val  > 3072) | (joys[2].val  > 3072)))
+        else if((optionSelected < 3) &&((joys[0].val  > 3072) | (joys[2].val  < 1024)))
         {
             optionSelected++;
         }
@@ -573,6 +575,8 @@ void TIM7_IRQHandler(void)
     TIM7->SR &= ~TIM_SR_UIF;
     if (total_seconds_left > 0)
         total_seconds_left--;
+    if (hardCount > 0)
+        hardCount--;
 }
 
 void countdown_timer(void)
@@ -624,7 +628,8 @@ void initialize_lcd_contents(void)
     {
                 LCD_Clear(RED);
                 LCD_DrawString(40, 40, WHITE, RED, "T I M E L E F T", 16, 0);
-                LCD_DrawString(40, 180, WHITE, RED, "S C O R E", 16, 0);
+                LCD_DrawString(20, 150, WHITE, RED, "S C O R E", 16, 0);
+                LCD_DrawString(20, 230, WHITE, RED, "TIME TO SCORE", 16, 0);
     }
 
 
@@ -635,7 +640,6 @@ void continuous_display_music(void)
 {
     reset_voices();
     MIDI_Player *mp = midi_init(nocaution);
-
 
     // The default rate for a MIDI file is 2 beats per second
     // with 48 ticks per beat.  That's 500000/48 microseconds.
@@ -648,8 +652,6 @@ void continuous_display_music(void)
         num_to_string();
         if(total_seconds_left == 0)
         {
-
-            servos_disable();
             break;
         }
         if(total_seconds_left == 60)
@@ -672,11 +674,16 @@ void continuous_display_music(void)
         }
         else if(gameMode == INITHARDMODE)
         {
+                   if(hardCount == 0)
+                           break;
                    if (total_seconds_left > 10)
-                       LCD_DrawString(80, 90, WHITE, RED, print_countdown, 16, 0);
+                       LCD_DrawString(100, 90, WHITE, RED, print_countdown, 16, 0);
                    else
-                       LCD_DrawString(80, 90, BLACK, RED, print_countdown, 16, 0);
-                   LCD_DrawString(80, 230, WHITE, RED, print_score, 16, 0);
+                       LCD_DrawString(100, 90, BLACK, RED, print_countdown, 16, 0);
+                   LCD_DrawString(100, 180, WHITE, RED, print_score, 16, 0);
+                   char print_hardscore [4];
+                   sprintf(print_hardscore, "%d%d", hardCount/10, hardCount%10);
+                   LCD_DrawString(100, 250, WHITE, RED, print_hardscore, 16, 0);
         }
         // Loop and Shift Music According to Time Remaining
             // how to turn off one song?
@@ -715,7 +722,6 @@ int main(void)
     init_usart(); // printf with serial protocol
     enableTIM14();
     init_robot();
-    servos_enable();
     char newStr[2];
 
     LCD_Setup(); // this will call init_lcd_spi()
@@ -760,6 +766,7 @@ int main(void)
                 gameMode = GAMEOVER;
                 break;
         case GAMEOVER:
+                servos_disable();
                 drawGameOver();
                 break;
         case INITLEADERBOARD:
@@ -799,6 +806,7 @@ int main(void)
         case INITHARDMODE:
             setup_ports(); // sets up PC10 or other GPIO input (PIR rising edge)
                                    score = 0;
+                                   hardCount = 10;
                                    total_seconds_left = (TOTAL_SECONDS_RESET_VALUE);
                                    game_logic(); // calculate time and increment score
                                    initialize_lcd_contents(); // display contents of LCD
