@@ -178,7 +178,6 @@ void init_robot() {
     for(int id = 0; id < SERVO_CNT; id++ ) {
         servo_init(id);
     }
-
     RCC->APB2ENR |= RCC_APB2ENR_TIM17EN;
     TIM17->PSC = 300-1;
     TIM17->ARR = 4800-1;
@@ -642,12 +641,15 @@ void continuous_display_music(void)
     // with 48 ticks per beat.  That's 500000/48 microseconds.
     init_tim16(10417);
     //int shift = 0;
+    servos_enable();
     while (1)
     {
         // Redraw Count Down Timer and Score for Every Frame
         num_to_string();
         if(total_seconds_left == 0)
         {
+
+            servos_disable();
             break;
         }
         if(total_seconds_left == 60)
@@ -713,6 +715,7 @@ int main(void)
     init_usart(); // printf with serial protocol
     enableTIM14();
     init_robot();
+    servos_enable();
     char newStr[2];
 
     LCD_Setup(); // this will call init_lcd_spi()

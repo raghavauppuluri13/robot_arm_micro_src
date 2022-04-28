@@ -97,4 +97,8 @@ void servo_write(uint8_t id, float deg);
 static uint32_t map(uint32_t in, uint32_t from_high, uint32_t from_low,
                                   uint32_t to_high,   uint32_t to_low);
 
+void servos_enable();
+
+void servos_disable();
+
 #endif

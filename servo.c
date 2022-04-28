@@ -13,9 +13,16 @@ void pwm_gpio_init()
 
     TIM3->ARR = PWM_ARR-1;
     TIM3->PSC = PWM_PSC-1;
+}
 
+void servos_enable() {
     TIM2->CR1 |= TIM_CR1_CEN;
     TIM3->CR1 |= TIM_CR1_CEN;
+}
+
+void servos_disable() {
+    TIM2->CR1 &= ~TIM_CR1_CEN;
+    TIM3->CR1 &= ~TIM_CR1_CEN;
 }
 
 void servo_init(uint8_t id) {
