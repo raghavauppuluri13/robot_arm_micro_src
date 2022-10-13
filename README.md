@@ -25,6 +25,7 @@ Raghava
 - Top down view and side view
 - Current state?
 - Place a marker where objects are anticipated to be? (Would have to be input by user)
+- If recording motions is added, add a timer to the screen and a red dot to indicate it is being recorded.
 
 
 Kaden
@@ -64,3 +65,4 @@ Rohit/Kaden
 - A default reset state for the arm
 - Some way of telling the user the controls if advanced functions are added.
 - Pick up stacks of boxes and keep it stable.
+- Have a continuous move object mode, where when a box is placed on top of a sensor, the arm automatically moves it.
