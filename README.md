@@ -2,6 +2,8 @@
 
 Source files for robot arm project for ECE 362
 
+[Project Video](https://www.youtube.com/watch?v=FccGxyFGFdw&list=PLnXxGWN1CH0dvdpDsjcVRisxLoUF9EFiQ&index=1)
+
 ## Arm Details
 
 - 6 Hobby servos controlled with PWM (duty cycle corresponds to angle)
